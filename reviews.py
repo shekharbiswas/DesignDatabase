@@ -45,12 +45,16 @@ with open("urls.txt",'r') as urllist, open('data.csv','w+') as outfile:
         if data:
             for r in data['reviews']:
                 r["product"] = data["product_title"]
-                r['url'] = url
-                if 'verified' in r:
-                    if 'Verified Purchase' in r['verified']:
-                        r['verified'] = 'Yes'
-                    else:
-                        r['verified'] = 'Yes'
+                try:
+                    if 'verified' in r:
+                        if 'Verified Purchase' in r['verified']:
+                            r['verified'] = 'Yes'
+                        else:
+                            r['verified'] = 'No'
+                except:
+                    r['verified'] = 'No'
+
+
                 r['rating'] = r['rating'].split(' out of')[0]
                 date_posted = r['date'].split('on ')[-1]
                 r['date'] = dateparser.parse(date_posted).strftime('%d %b %Y')
